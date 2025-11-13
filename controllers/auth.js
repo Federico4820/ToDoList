@@ -18,7 +18,9 @@ exports.registerUser = (req, res, next) => {
   const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
-  const profileImage = req.file ? req.file.path.replace(/\\/g, "/") : null;
+  const profileImage = req.file
+    ? req.file.path.replace(/\\/g, "/").replace(/^public\//, "")
+    : null;
 
   bcrypt.hash(password, 12).then((hashedPassword) => {
     User.create({
@@ -125,11 +127,18 @@ exports.deleteUser = async (req, res, next) => {
     }
 
     if (user.profileImage) {
-      const imagePath = path.join(__dirname, "..", user.profileImage);
-      fs.unlink(imagePath, (err) => {
-        if (err) {
-          console.warn("Impossibile eliminare l'immagine:", err.message);
-        }
+      const oldImagePath = path.join(
+        __dirname,
+        "..",
+        "public",
+        user.profileImage
+      );
+      fs.unlink(oldImagePath, (err) => {
+        if (err)
+          console.warn(
+            "Impossibile eliminare l'immagine precedente:",
+            err.message
+          );
       });
     }
 
@@ -194,7 +203,12 @@ exports.updateUser = async (req, res, next) => {
 
     if (req.file) {
       if (user.profileImage) {
-        const oldImagePath = path.join(__dirname, "..", user.profileImage);
+        const oldImagePath = path.join(
+          __dirname,
+          "..",
+          "public",
+          user.profileImage
+        );
         fs.unlink(oldImagePath, (err) => {
           if (err)
             console.warn(
@@ -203,7 +217,9 @@ exports.updateUser = async (req, res, next) => {
             );
         });
       }
-      user.profileImage = req.file.path.replace(/\\/g, "/");
+      user.profileImage = req.file
+        ? req.file.path.replace(/\\/g, "/").replace(/^public\//, "")
+        : null;
     }
 
     await user.save();
