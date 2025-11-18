@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     if (req.file) {
-      const filePath = path.join(__dirname, "..", req.file.path);
+      const filePath = path.join(__dirname, "..", "public", req.file.path);
       fs.unlink(filePath, (err) => {
         if (err)
           console.warn(
