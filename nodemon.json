@@ -1,7 +1,6 @@
 {
     "env" : {
         "NODE_ENV" : "dev",
-        "NODE_PORT" : "8080",
         "NODE_DATABASE" : "to_do_list",
         "NODE_DATABASE_USER" : "root",
         "NODE_DATABASE_PASSWORD" : "root",
