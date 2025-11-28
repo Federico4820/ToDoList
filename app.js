@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: "https://todolist.lepore.pro/",
+    origin: "https://todolist.lepore.pro",
     optionsSuccessStatus: 200,
   })
 );
