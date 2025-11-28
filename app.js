@@ -26,7 +26,12 @@ app.use((req, res, next) => {
 });
 */
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://todolist.lepore.pro/",
+    optionsSuccessStatus: 200,
+  })
+);
 
 app.use(express.static("public"));
 app.use(helmet());
